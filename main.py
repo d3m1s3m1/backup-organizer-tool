@@ -4,6 +4,7 @@ import datetime
 import os
 import shutil
 import zipfile
+import tkinter as tk
 
 
 def copy_file_to_folder(start_file_path, to_file_path):
@@ -37,7 +38,7 @@ def get_creation_date_of_photo(photo_path):
         year = full_date.split(":")[0]
         month = full_date.split(":")[1]
         return str(year), int(month)
-    except:
+    except Exception:
         try:
             FILE_DATE = datetime.datetime.strptime(file_name, "%Y%m%d_%H%M%S")
         except:
@@ -109,11 +110,49 @@ def backup_zip():
             extract_all_from(MY_FILE_PATH)
 
 
-FOLDER_TO_BACKUP = r"G:\BACKUP MEDIA"
+FOLDER_TO_BACKUP = r"G:\Note5"
 FOLDER_WALK = os.walk(FOLDER_TO_BACKUP)
-
 ZIP_CACHE_FOLDER = os.path.join(MAIN_BACKUP_FOLDER, "ZIPCACHE")
 create_folder(ZIP_CACHE_FOLDER)
 
+
+class Application(tk.Frame):
+    def __init__(self, master=None):
+        v = tk.IntVar()
+        super().__init__(master)
+        self.pack(fill=tk.BOTH, expand=1)
+        self.master.maxsize(320, 200)
+
+        tk.Radiobutton(root,
+                       text="Move",
+                       padx=5,
+                       variable=v,
+                       value=1).pack(anchor=tk.W)
+
+        tk.Radiobutton(root,
+                       text="Copy",
+                       padx=5,
+                       variable=v,
+                       value=2).pack(anchor=tk.W)
+
+        start_button = tk.Button(root,
+                                 text="Start Backup",
+                                 justify=tk.CENTER,
+                                 width=100)
+        start_button.pack()
+
+        tk.Label(root, text="Folder to Backup").place(x=5, y=5)
+        tk.Entry(root, width=50).place(x=5, y=30)
+
+        tk.Label(root, text="Backup Folder").place(x=5, y=55)
+        tk.Entry(root, width=50).place(x=5, y=80)
+
+
+root = tk.Tk()
+root.geometry("320x200")
+root.title("Backupinator v.0")
+app = Application(master=root)
+
 if __name__ == "__main__":
-    backup()
+    app.mainloop()
+    # backup(mode="move")
