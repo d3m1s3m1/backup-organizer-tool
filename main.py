@@ -110,12 +110,6 @@ def backup_zip():
             extract_all_from(MY_FILE_PATH)
 
 
-FOLDER_TO_BACKUP = r"G:\Note5"
-FOLDER_WALK = os.walk(FOLDER_TO_BACKUP)
-ZIP_CACHE_FOLDER = os.path.join(MAIN_BACKUP_FOLDER, "ZIPCACHE")
-create_folder(ZIP_CACHE_FOLDER)
-
-
 class Application(tk.Frame):
     def __init__(self, master=None):
         v = tk.IntVar()
@@ -152,6 +146,11 @@ root = tk.Tk()
 root.geometry("320x200")
 root.title("Backupinator v.0")
 app = Application(master=root)
+
+FOLDER_TO_BACKUP = r"G:\Note5"
+FOLDER_WALK = os.walk(FOLDER_TO_BACKUP)
+ZIP_CACHE_FOLDER = os.path.join(MAIN_BACKUP_FOLDER, "ZIPCACHE")
+create_folder(ZIP_CACHE_FOLDER)
 
 if __name__ == "__main__":
     app.mainloop()
