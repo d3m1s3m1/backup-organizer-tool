@@ -4,7 +4,7 @@ import datetime
 import os
 import shutil
 import zipfile
-import tkinter as tk
+import sys
 
 
 def copy_file_to_folder(start_file_path, to_file_path):
@@ -41,7 +41,7 @@ def get_creation_date_of_photo(photo_path):
     except Exception:
         try:
             FILE_DATE = datetime.datetime.strptime(file_name, "%Y%m%d_%H%M%S")
-        except:
+        except Exception:
             FILE_UNIX = os.path.getmtime(photo_path)
             FILE_DATE = datetime.datetime.fromtimestamp(FILE_UNIX)
         finally:
@@ -110,48 +110,22 @@ def backup_zip():
             extract_all_from(MY_FILE_PATH)
 
 
-class Application(tk.Frame):
-    def __init__(self, master=None):
-        v = tk.IntVar()
-        super().__init__(master)
-        self.pack(fill=tk.BOTH, expand=1)
-        self.master.maxsize(320, 200)
-
-        tk.Radiobutton(root,
-                       text="Move",
-                       padx=5,
-                       variable=v,
-                       value=1).pack(anchor=tk.W)
-
-        tk.Radiobutton(root,
-                       text="Copy",
-                       padx=5,
-                       variable=v,
-                       value=2).pack(anchor=tk.W)
-
-        start_button = tk.Button(root,
-                                 text="Start Backup",
-                                 justify=tk.CENTER,
-                                 width=100)
-        start_button.pack()
-
-        tk.Label(root, text="Folder to Backup").place(x=5, y=5)
-        tk.Entry(root, width=50).place(x=5, y=30)
-
-        tk.Label(root, text="Backup Folder").place(x=5, y=55)
-        tk.Entry(root, width=50).place(x=5, y=80)
-
-
-root = tk.Tk()
-root.geometry("320x200")
-root.title("Backupinator v.0")
-app = Application(master=root)
-
-FOLDER_TO_BACKUP = r"G:\Note5"
+FOLDER_TO_BACKUP = ""
 FOLDER_WALK = os.walk(FOLDER_TO_BACKUP)
 ZIP_CACHE_FOLDER = os.path.join(MAIN_BACKUP_FOLDER, "ZIPCACHE")
 create_folder(ZIP_CACHE_FOLDER)
 
 if __name__ == "__main__":
-    app.mainloop()
-    # backup(mode="move")
+    print("\n--ACTIVATING BACKUP UTILITY--\n")
+    if len(sys.argv) < 3:
+        print("ERROR: FORGOT PARAMETERS\n")
+        exit()
+    if len(sys.argv == 3):
+        FOLDER_TO_BACKUP = sys.argv[1]
+        l_mode = sys.argv[2]
+        if l_mode not in ("move", "copy"):
+            print("ERROR: ONLY MODES ARE 'move' COPY 'copy'")
+            exit()
+        backup(mode=l_mode)
+
+
