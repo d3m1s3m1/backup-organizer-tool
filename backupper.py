@@ -120,7 +120,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("ERROR: FORGOT PARAMETERS\n")
         exit()
-    if len(sys.argv == 3):
+    if len(sys.argv) == 3:
         FOLDER_TO_BACKUP = sys.argv[1]
         l_mode = sys.argv[2]
         if l_mode not in ("move", "copy"):
